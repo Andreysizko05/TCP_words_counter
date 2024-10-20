@@ -1,59 +1,57 @@
-//#include "MainWindow.h"
-//#include <QApplication>
-
-#include <qdebug.h>
+#include <QApplication>
+#include <QTcpSocket>
+#include <QHostAddress>
+#include <QDebug>
 #include <iostream>
-#include <boost/array.hpp>
-#include <boost/asio.hpp>
-
-using boost::asio::ip::tcp;
 
 int main(int argc, char* argv[])
 {
-    try
+    QApplication a(argc, argv);
+
+    if (argc != 2)
     {
-        if (argc != 2)
-        {
-            std::cerr << "Usage: client <host>" << std::endl;
-            return 1;
-        }
-
-        boost::asio::io_context io_context;
-
-        tcp::resolver resolver(io_context);
-        tcp::resolver::results_type endpoints =
-            resolver.resolve(argv[1], "daytime");
-
-        tcp::socket socket(io_context);
-        boost::asio::connect(socket, endpoints);
-
-        for (;;)
-        {
-            boost::array<char, 128> buf;
-            boost::system::error_code error;
-
-            size_t len = socket.read_some(boost::asio::buffer(buf), error);
-
-            if (error == boost::asio::error::eof)
-                break; // Connection closed cleanly by peer.
-            else if (error)
-                throw boost::system::system_error(error); // Some other error.
-
-            std::cout.write(buf.data(), len);
-        }
+        std::cerr << "Usage: client <host>" << std::endl;
+        return 1;
     }
-    catch (std::exception& e)
+    QString host = argv[1]; // Get the host from arguments
+
+    // Create the socket
+    QTcpSocket socket;
+
+    // Connect to the server on port 13 (daytime protocol)
+    socket.connectToHost(QHostAddress(host), 13);
+
+    // Wait for the connection (no more than 5 seconds)
+    if (!socket.waitForConnected(5000))
     {
-        std::cerr << e.what() << std::endl;
+        qDebug() << "Connection error:" << socket.errorString();
+        return 1;
+    }
+    qDebug() << "Connection established";
+
+    // Buffer for reading data
+    QByteArray data;
+
+    // Wait for data from the server
+    while (socket.waitForReadyRead(5000))
+    { // Wait for data (no more than 5 seconds)
+        data.append(socket.readAll()); // Read all available data
     }
 
-    return 0;
+    if (data.isEmpty())
+    {
+        qDebug() << "No data received.";
+        return 1;
+    }
+
+    // Output the received data
+    qDebug() << data.constData();
+
+    // Close the connection
+    socket.disconnectFromHost();
+    if (socket.state() == QAbstractSocket::ConnectedState)
+        socket.waitForDisconnected();
+
+    return 0; // For GUI Apps
+    //return a.exec();
 }
-
-//int main(int argc, char *argv[])
-//{
-//    QApplication a(argc, argv);
-//    MainWindow w;
-//    w.show();
-//    return a.exec();
-//}

@@ -54,8 +54,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt5 CONFIG REQUIRED Widgets SerialPort)
-find_package(Boost 1.76.0)
+find_package(Qt5 CONFIG REQUIRED Widgets SerialPort Network)
 
 set(Qt5_USE_STATIC_LIBS ON)
 set(Qt5_USE_STATIC_RUNTIME ON)
@@ -82,9 +81,7 @@ target_link_libraries(tcpClient
     Qt5::Core
     Qt5::Widgets
     Qt5::SerialPort
-	Boost::system
-	Boost::filesystem
-	Boost::thread)
+	Qt5::Network)
 
 qt_import_plugins(tcpClient
     INCLUDE Qt5::QWindowsIntegrationPlugin
