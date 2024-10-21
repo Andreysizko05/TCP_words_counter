@@ -1,7 +1,7 @@
 include(./profile)
 
 [settings]
-os=Windows
+os=Linux
 compiler=gcc
 compiler.version=13
 compiler.libcxx=libstdc++11
