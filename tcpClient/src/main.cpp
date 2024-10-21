@@ -18,8 +18,8 @@ int main(int argc, char* argv[])
     // Create the socket
     QTcpSocket socket;
 
-    // Connect to the server on port 13 (daytime protocol)
-    socket.connectToHost(QHostAddress(host), 13);
+    // Connect to the server on port 5555 (custom port)
+    socket.connectToHost(QHostAddress(host), 5555);
 
     // Wait for the connection (no more than 5 seconds)
     if (!socket.waitForConnected(5000))
