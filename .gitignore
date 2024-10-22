@@ -6,3 +6,4 @@ build-*/
 build*/
 CMakeUserPresets.json
 CMakeLists.txt.user
+*test.txt
