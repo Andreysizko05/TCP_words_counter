@@ -72,26 +72,17 @@ void receive_file(tcp::socket& socket)
                         if (twoInRow++)
                         {
                             inWord = 0;
-
                             twoInRow = 0;
-                            bool isUnique = true;
-                            for (const std::string& str : uniWordsList)
-                            {
-                                if (str == currentWord)
-                                {
-                                    isUnique = false;
-                                    break;
-                                }
-                            }
-                            if (isUnique)
-                                uniWordsList.push_back(currentWord);
                         }
                     }
                     else
                     {
                         inWord = 0;
-
                         twoInRow = 0;
+                    }
+
+                    if (!inWord) // word was recieved
+                    {
                         bool isUnique = true;
                         for (const std::string& str : uniWordsList)
                         {
@@ -103,6 +94,9 @@ void receive_file(tcp::socket& socket)
                         }
                         if (isUnique)
                             uniWordsList.push_back(currentWord);
+                        currentWord.clear();
+
+                        ++wordCount;
                     }
                 }
             }
@@ -111,10 +105,7 @@ void receive_file(tcp::socket& socket)
                 if (!inWord) // If the character is a letter, check if we're entering a new word
                 {
                     inWord = 1;
-
-                    currentWord.clear();
                     twoInRow = 0;
-                    ++wordCount;
                 }
                 currentWord += c;
             }
