@@ -12,7 +12,9 @@ std::string SocketHandler::makeAnswerString()
 {
 	static int reqCounter = 0;
 	std::cout << "server answers count = " << ++reqCounter << std::endl;
-	return "Hell " + std::to_string(reqCounter);
+	return "\nwordCount = " + std::to_string(wordCount) + \
+		"\nuniWordCount = " + std::to_string(uniWordsList.size()) + \
+		"\nUniInRowCnt = " + std::to_string(UniInRowCnt);
 }
 
 std::string SocketHandler::readUntilDelimiter(tcp::socket& socket, char delimiter)
