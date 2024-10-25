@@ -59,7 +59,8 @@ find_package(Boost 1.76.0)
 
 add_executable(tcpServer
     src/main.cpp
-)
+	include/SocketHandler.h
+	src/SocketHandler.cpp)
 
 target_include_directories(
     tcpServer
