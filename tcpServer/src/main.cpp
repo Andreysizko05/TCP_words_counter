@@ -54,9 +54,53 @@ void receive_file(tcp::socket& socket)
         }
 
         std::cout << "File successfully received:" << std::endl;
+
+        int wordCount = 0;
+        bool inWord = false;
+        uint8_t twoInRow = 0;
+
+        std::string currentWord;
         for (char c : fileData)
+        {
+            if (!std::isalpha(static_cast<unsigned char>(c)))
+            {
+                if (inWord) // If the current character is not a letter, end the word if we're in one
+                {
+                    if (c == '\'')
+                    {
+                        if (twoInRow++)
+                        {
+                            inWord = false;
+
+                            twoInRow = 0;
+                            currentWord.clear();
+                        }
+                    }
+                    else
+                    {
+                        inWord = false;
+
+                        twoInRow = 0;
+                        currentWord.clear();
+                    }
+                }
+            }
+            else
+            {
+                if (!inWord) // If the character is a letter, check if we're entering a new word
+                {
+                    inWord = true;
+
+                    twoInRow = 0;
+                    ++wordCount;
+                }
+                currentWord += c;
+            }
             std::cout << c;
-        std::cout << std::endl;
+        }
+        std::cout << std::endl << std::endl;
+
+        std::cout << std::endl << "wordCount = " << wordCount << std::endl;
     }
     catch (std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
