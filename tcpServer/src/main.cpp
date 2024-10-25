@@ -6,14 +6,14 @@
 
 using boost::asio::ip::tcp;
 
-std::string make_answer_string()
+std::string makeAnswerString()
 {
 	static int reqCounter = 0;
 	std::cout << "server answers count = " << ++reqCounter << std::endl;
 	return "Hell " + std::to_string(reqCounter);
 }
 
-std::string read_until_delimiter(tcp::socket& socket, char delimiter)
+std::string readUntilDelimiter(tcp::socket& socket, char delimiter)
 {
 	std::string result;
 	char buffer;
@@ -28,11 +28,11 @@ std::string read_until_delimiter(tcp::socket& socket, char delimiter)
 
 	return result;
 }
-void receive_file(tcp::socket& socket)
+void receiveFile(tcp::socket& socket)
 {
 	try {
 		// Step 1: Read file size until the newline character
-		std::string fileSizeStr = read_until_delimiter(socket, '\n');
+		std::string fileSizeStr = readUntilDelimiter(socket, '\n');
 		std::uint64_t fileSize = std::stoull(fileSizeStr);
 		std::cout << "File size: " << fileSize << " bytes" << std::endl;
 
@@ -169,9 +169,9 @@ int main()
 			tcp::socket socket(io_context);
 			acceptor.accept(socket);
 
-			receive_file(socket);
+			receiveFile(socket);
 
-			std::string message = make_answer_string();
+			std::string message = makeAnswerString();
 			boost::system::error_code ignored_error;
 			boost::asio::write(socket, boost::asio::buffer(message), ignored_error);
 		}
