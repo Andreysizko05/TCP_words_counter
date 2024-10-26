@@ -6,8 +6,10 @@
 #include <boost/asio.hpp>
 #include <boost/array.hpp>
 #include <fstream>
+#include <nlohmann/json.hpp>
 
 using boost::asio::ip::tcp;
+using json = nlohmann::json;
 
 class SocketHandler
 {

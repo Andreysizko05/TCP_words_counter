@@ -34,6 +34,7 @@ class tcpServer(ConanFile):
 
     def requirements(self):
         self.requires("boost/1.76.0")
+        self.requires("nlohmann_json/3.11.3")
 
     def configure(self):
         pass

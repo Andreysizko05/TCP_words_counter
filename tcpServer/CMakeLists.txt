@@ -55,6 +55,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Boost 1.76.0)
+find_package(nlohmann_json REQUIRED)
 
 
 add_executable(tcpServer
@@ -73,4 +74,5 @@ target_link_libraries(tcpServer
     ${CMAKE_STATIC_BUILD}
 	Boost::system
 	Boost::filesystem
-	Boost::thread)
+	Boost::thread
+	nlohmann_json::nlohmann_json)

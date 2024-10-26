@@ -12,9 +12,13 @@ std::string SocketHandler::makeAnswerString()
 {
 	static int reqCounter = 0;
 	std::cout << "server answers count = " << ++reqCounter << std::endl;
-	return "\nwordCount = " + std::to_string(wordCount) + \
-		"\nuniWordCount = " + std::to_string(uniWordsList.size()) + \
-		"\nUniInRowCnt = " + std::to_string(UniInRowCnt);
+
+	json answerJson = {
+		{"wordCount", wordCount},
+		{"uniWordCount", static_cast<int>(uniWordsList.size())},
+		{"UniInRowCnt", UniInRowCnt}
+	};
+	return answerJson.dump();
 }
 
 std::string SocketHandler::readUntilDelimiter(tcp::socket& socket, char delimiter)
