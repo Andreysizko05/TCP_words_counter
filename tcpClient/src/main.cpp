@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
     socket.write("\n");
 
     // Send file content
-    qDebug() << "File content:\n" << fileData;
+    //qDebug() << "File content:\n" << fileData;
     stream.writeRawData(fileData.data(), fileData.size());  // Send the file content
 
     socket.flush();
