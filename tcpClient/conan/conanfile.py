@@ -34,7 +34,6 @@ class tcpClient(ConanFile):
 
     def requirements(self):
         self.requires("qt/5.15.5")
-        self.requires("boost/1.76.0")
         self.requires("freetype/2.13.2", override=True)
 
     def configure(self):
